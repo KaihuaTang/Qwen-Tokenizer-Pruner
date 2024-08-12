@@ -1,4 +1,4 @@
-# Qwen-Tokenizer-Pruner
+# Qwen-Tokenizer-Pruner(under construction)
 Due to the huge vocaburary size (151,936) of Qwen models, the Embedding and LM Head weights are excessively heavy. Therefore, this project provides a Tokenizer vocabulary shearing solution for Qwen and Qwen-VL.
 
 **If my open source projects have inspired you, giving me some sponsorship will be a great help to my subsequent open source work.** 
@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ## Supported Models
 This tokenizer vocabulary pruning tool supports the following LLM models.
 - [Qwen]()
-- [Qwen-VL]
+- [Qwen-VL]()
 
 Please download your base model from the above checkpoints.
 

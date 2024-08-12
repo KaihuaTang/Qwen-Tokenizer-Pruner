@@ -72,3 +72,7 @@ def main():
         print(f"==> Mismatch example 0 old tokens: {old_context_tokens}")
         new_context_tokens = new_tokenizer.encode(mismatch_list[0])
         print(f"==> Mismatch example 0 new tokens: {new_context_tokens}")
+
+
+if __name__=='__main__':
+    main()
