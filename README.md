@@ -8,5 +8,5 @@
 # 代码更新中
 
 ```
-python main.py --old_model_path XXX --new_model_path XXX --support_data ./data --support_lang 'zh-cn' 'en'
+python main.py --old_model_path XXX --new_model_path XXX --support_data ./sample_data --support_lang 'zh-cn' 'en'
 ```
