@@ -6,3 +6,7 @@
 [支持我的后续开源工作❤️🙏](https://kaihuatang.github.io/donate.html)
 
 # 代码更新中
+
+```
+python main.py --old_model_path XXX --new_model_path XXX --support_data ./data --support_lang 'zh-cn' 'en'
+```

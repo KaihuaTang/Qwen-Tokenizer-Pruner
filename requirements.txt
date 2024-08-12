@@ -1,0 +1,7 @@
+tqdm
+base64
+tiktoken
+torchvision
+langdetect
+transformers==4.32.0
+transformers_stream_generator==0.0.4

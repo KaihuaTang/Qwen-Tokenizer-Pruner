@@ -3,6 +3,9 @@ from tqdm import tqdm
 import json
 import torch
 from utils import make_context
+from langdetect import detect as langdetect
+from langdetect import DetectorFactory
+DetectorFactory.seed = 0 # no random
 
 def get_text_list(folder_path):
     query_list = []
@@ -50,3 +53,38 @@ def count_freq(data_path, vocab_size, tokenizer, output_path, inherit_vocab_coun
     # save vocab_counts
     torch.save(vocab_counts, os.path.join(output_path, 'vocab_counts.torch'))
     return vocab_counts
+
+
+def is_special_token(token):
+    return ((token.startswith('<') and token.endswith('>') and len(token) > 2) or
+            (token.startswith('[') and token.endswith(']') and len(token) > 2))
+    
+
+def update_vocab_count_by_langfilter(support_lang, vocab_counts, old_bytes_list, count_offset=1):
+    for i in tqdm(range(len(old_bytes_list))):
+        token_bytes = old_bytes_list[i]
+        # add try to keep unknown token 
+        try:
+            token_str = token_bytes.decode("utf-8")
+            if (langdetect(token_str) in support_lang) or is_special_token(token_str):
+                vocab_counts[i] += count_offset
+        except:
+            vocab_counts[i] += count_offset
+    return vocab_counts
+                
+
+def count_recursive(vocab_size, vocab_counts, old_bytes_list):
+    recursive_counts = [0 for _ in range(vocab_size)]
+
+    for i in tqdm(range(len(old_bytes_list))):
+        token_bytes = old_bytes_list[i]
+        t_count = vocab_counts[i]
+        b_len = len(token_bytes)
+        if t_count > 0 and b_len > 1:
+            for j in range(1, b_len):
+                for k in range(b_len+1-j):
+                    sub_token = token_bytes[k:j+k]
+                    if sub_token in old_bytes_list:
+                        recursive_counts[old_bytes_list.index(sub_token)] += t_count
+
+    return recursive_counts

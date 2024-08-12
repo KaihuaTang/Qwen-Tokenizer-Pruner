@@ -4,8 +4,9 @@ import torch
 import argparse
 import base64
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from vocab_count import count_freq
-from vocab_lang_filter import update_vocab_count_by_langfilter
+from vocab_count import count_freq, update_vocab_count_by_langfilter, count_recursive
+from vocab_save import get_new_vocab_and_map, save_vocab
+from model_save import saving_updated_qwenvl
 from utils import get_bpe_file
 from tqdm import tqdm
 
@@ -28,6 +29,9 @@ def main():
     parser.add_argument('--inherit_vocab_count', type=str, default=None)
     args = parser.parse_args()
     
+    # valid check
+    assert (args.support_data is not None) or (len(args.support_lang) > 0), "Must provide at least one pruning method." 
+
     # init output path
     if not os.path.exists(args.new_model_path):
         os.makedirs(args.new_model_path)
@@ -66,6 +70,26 @@ def main():
                                                         vocab_counts=vocab_counts, 
                                                         old_bytes_list=old_bytes_list, 
                                                         count_offset=1)
+        
+    
+    # sub-token count
+    print(f"==> Recursively calculate sub-token count")
+    recur_counts = count_recursive(vocab_size=old_vocab_size, 
+                                   vocab_counts=vocab_counts, 
+                                   old_bytes_list=old_bytes_list)
+    
+    # get new vocab
+    print(f"==> Get new vocabulary bpe file and save it")
+    new_bytes_list, mapping_new2old = get_new_vocab_and_map(old_bytes_list=old_bytes_list, 
+                                                            old_vocab_size=old_vocab_size,
+                                                            vocab_counts=vocab_counts, 
+                                                            recur_counts=recur_counts)
+    new_vocab_size = len(mapping_new2old)
+    save_vocab(new_bytes_list, mapping_new2old, args.new_model_path)
+
+    # update model ckpt
+    print(f"==> Update model ckpt for new tokenizer")
+    saving_updated_qwenvl(old_model, new_vocab_size, mapping_new2old, args.new_model_path)
     
 if __name__=='__main__':
     main()
