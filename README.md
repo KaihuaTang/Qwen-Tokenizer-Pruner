@@ -24,7 +24,11 @@ Please download your base model from the above checkpoints.
 python main.py --old_model_path ~/projects/checkpoints/Qwen-1_8B-Chat/ --new_model_path ~/projects/checkpoints/Qwen-1_8B-Chat-New-Vocab/ --support_data ./sample_data --support_lang 'zh-cn' 'en'
 ```
 
-2. Check whether the new tokenizer is equal to the original tokenizer
+2. Post processing
+For Qwen models, change SPECIAL_START_ID in tokenization_qwen.py to your New Tiktoken BPE file Size, check printed log (see the following example). 
+![alt text](./assets/example.png "New SPECIAL_START_ID")
+
+3. Check whether the new tokenizer is equal to the original tokenizer
 ```
 python check.py --old_model_path ~/projects/checkpoints/Qwen-1_8B-Chat/ --new_model_path ~/projects/checkpoints/Qwen-1_8B-Chat-New-Vocab/ --support_data ./sample_data
 ```
