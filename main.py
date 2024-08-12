@@ -6,7 +6,7 @@ import base64
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from vocab_count import count_freq, update_vocab_count_by_langfilter, count_recursive
 from vocab_save import get_new_vocab_and_map, save_vocab
-from model_save import saving_updated_qwenvl
+from model_save import *
 from utils import get_bpe_file
 from tqdm import tqdm
 
@@ -42,7 +42,7 @@ def main():
     old_model = AutoModelForCausalLM.from_pretrained(args.old_model_path, trust_remote_code=True)
     old_tokenizer = AutoTokenizer.from_pretrained(args.old_model_path, trust_remote_code=True)
     old_vocab_size = old_model.config.__dict__['vocab_size']
-    print(f"{old_model.config.__dict__['tokenizer_type']} has vocabulary size {old_vocab_size}")
+    print(f"Tokenizer has vocabulary size {old_vocab_size}")
     
     # using support data
     if args.support_data is not None:
@@ -89,7 +89,7 @@ def main():
 
     # update model ckpt
     print(f"==> Update model ckpt for new tokenizer")
-    saving_updated_qwenvl(old_model, new_vocab_size, mapping_new2old, args.new_model_path)
+    saving_updated_qwen(old_model, new_vocab_size, mapping_new2old, args.new_model_path)
     
 if __name__=='__main__':
     main()

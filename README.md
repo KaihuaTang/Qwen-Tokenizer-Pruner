@@ -1,12 +1,34 @@
 # Qwen-Tokenizer-Pruner
-由于Qwen模型的超大vocab_size(151936)，在模型部署和小型化时他的Embedding和LM_Head的权重维度过于巨大，因此本项目提供了一套Qwen和Qwen-VL的Tokenizer词表剪裁方案。
+Due to the huge vocaburary size (151,936) of Qwen models, the Embedding and LM Head weights are excessively heavy. Therefore, this project provides a Tokenizer vocabulary shearing solution for Qwen and Qwen-VL.
 
-**如果我的开源项目给你带来了启发，给予我一些赞助将对我后续的开源工作有很大帮助。**
+**If my open source projects have inspired you, giving me some sponsorship will be a great help to my subsequent open source work.** 
+[Support my subsequent open source work❤️🙏](https://kaihuatang.github.io/donate.html) [(Previous Supporters)](https://kaihuatang.github.io/supporters.html)
 
-[支持我的后续开源工作❤️🙏](https://kaihuatang.github.io/donate.html)
-
-# 代码更新中
-
+## Installation
+Run the following command to install required packages
 ```
-python main.py --old_model_path XXX --new_model_path XXX --support_data ./sample_data --support_lang 'zh-cn' 'en'
+pip install -r requirements.txt
 ```
+
+## Supported Models
+This tokenizer vocabulary pruning tool supports the following LLM models.
+- [Qwen]()
+- [Qwen-VL]
+
+Please download your base model from the above checkpoints.
+
+## Getting Started
+
+1. Get new model and tokenzer with smaller vocabulary size
+```
+python main.py --old_model_path ~/projects/checkpoints/Qwen-1_8B-Chat/ --new_model_path ~/projects/checkpoints/Qwen-1_8B-Chat-New-Vocab/ --support_data ./sample_data --support_lang 'zh-cn' 'en'
+```
+
+2. Check whether the new tokenizer is equal to the original tokenizer
+```
+python check.py --old_model_path ~/projects/checkpoints/Qwen-1_8B-Chat/ --new_model_path ~/projects/checkpoints/Qwen-1_8B-Chat-New-Vocab/ --support_data ./sample_data
+```
+
+## Prepare Your Own Target Dataset
+
+## License and Citation

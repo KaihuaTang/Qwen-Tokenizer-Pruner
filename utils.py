@@ -28,9 +28,12 @@ def make_context(
         nl_tokens = tokenizer.encode("\n")
 
         def _tokenize_str(role, content):
-            return f"{role}\n{content}", tokenizer.encode(
-                role, allowed_special=set(tokenizer.IMAGE_ST)
-            ) + nl_tokens + tokenizer.encode(content, allowed_special=set(tokenizer.IMAGE_ST))
+            if hasattr(tokenizer, 'IMAGE_ST'):
+                return f"{role}\n{content}", tokenizer.encode(
+                    role, allowed_special=set(tokenizer.IMAGE_ST)
+                ) + nl_tokens + tokenizer.encode(content, allowed_special=set(tokenizer.IMAGE_ST))
+            else:
+                return f"{role}\n{content}", tokenizer.encode(role) + nl_tokens + tokenizer.encode(content)
 
         system_text, system_tokens_part = _tokenize_str("system", system)
         system_tokens = im_start_tokens + system_tokens_part + im_end_tokens

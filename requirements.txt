@@ -1,7 +1,7 @@
 tqdm
-base64
+einops
 tiktoken
 torchvision
 langdetect
-transformers==4.32.0
-transformers_stream_generator==0.0.4
+transformers
+transformers_stream_generator

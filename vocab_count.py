@@ -27,7 +27,7 @@ def count_freq(data_path, vocab_size, tokenizer, output_path, inherit_vocab_coun
     # load data
     query_list, prompt_list = get_text_list(data_path)
     # calculate query vocabs
-    print("calculate query vocabs: add system prompt before encode")
+    print("calculate query vocab counts: add system prompt before encode")
     for i in tqdm(range(len(query_list))):
         query = query_list[i]
         _, context_tokens = make_context(tokenizer, query, history=[], system="You are a helpful assistant.")
@@ -35,7 +35,7 @@ def count_freq(data_path, vocab_size, tokenizer, output_path, inherit_vocab_coun
             vocab_counts[token] += 1
      
     # calculate promopt vocabs        
-    print("calculate prompt vocabs: encode directly")
+    print("calculate prompt vocab counts: encode directly")
     for i in tqdm(range(len(prompt_list))):
         prompt = prompt_list[i]
         prompt_tokens = tokenizer.encode(prompt)
