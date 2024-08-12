@@ -2,6 +2,13 @@
 import os
 import torch
 
+def get_bpe_file(root_path):
+    all_matchs = []
+    for file_name in os.listdir(root_path):
+        if file_name.endswith('tiktoken'):
+            all_matchs.append(os.path.join(root_path, file_name))
+    assert len(all_matchs) == 1, f"Multiple / No tiktoken bpe files found: {all_matchs}"
+    return all_matchs[0]
 
 def make_context(
     tokenizer,
