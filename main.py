@@ -5,7 +5,7 @@ import argparse
 import base64
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from vocab_count import count_freq, update_vocab_count_by_langfilter, count_recursive
-from vocab_save import get_new_vocab_and_map, save_vocab
+from vocab_save import get_new_vocab_and_map, save_vocab, reduce_to_target_size
 from model_save import *
 from utils import get_bpe_file
 from tqdm import tqdm
@@ -27,6 +27,7 @@ def main():
     parser.add_argument('--support_data', type=str, default=None)
     parser.add_argument('--support_lang', default=[], type=str, nargs='+')
     parser.add_argument('--inherit_vocab_count', type=str, default=None)
+    parser.add_argument('--target_size', type=int, default=None)
     args = parser.parse_args()
     
     # valid check
@@ -78,6 +79,15 @@ def main():
                                    vocab_counts=vocab_counts, 
                                    old_bytes_list=old_bytes_list)
     
+    # reduce vocab to target size
+    if args.target_size is not None:
+        print(f"==> Reduce vocab to the target size {args.target_size}")
+        vocab_counts, recur_counts = reduce_to_target_size(old_vocab_size=old_vocab_size, 
+                                                           target_vocab_size=args.target_size, 
+                                                           vocab_counts=vocab_counts, 
+                                                           recur_counts=recur_counts, 
+                                                           old_bytes_list=old_bytes_list)
+    
     # get new vocab
     print(f"==> Get new vocabulary bpe file and save it")
     new_bytes_list, mapping_new2old = get_new_vocab_and_map(old_bytes_list=old_bytes_list, 
@@ -89,7 +99,12 @@ def main():
 
     # update model ckpt
     print(f"==> Update model ckpt for new tokenizer")
-    saving_updated_qwen(old_model, new_vocab_size, mapping_new2old, args.new_model_path)
+    if 'visual' in old_model.config.__dict__:
+        print(f"==> Detected as Qwen-VL model")
+        saving_updated_qwenvl(old_model, new_vocab_size, mapping_new2old, args.new_model_path)
+    else:
+        print(f"==> Detected as normal Qwen model")
+        saving_updated_qwen(old_model, new_vocab_size, mapping_new2old, args.new_model_path)
     
 if __name__=='__main__':
     main()

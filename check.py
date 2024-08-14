@@ -48,7 +48,7 @@ def main():
             mismatch_list.append(query)
         elif not all([old_token == mapping_new2old[new_token] for old_token, new_token in zip(old_context_tokens, new_context_tokens)]):
             mismatch_list.append(query)
-    print(f"==> Mismatch num in query list: {len(mismatch_list)}")
+    print(f"==> Mismatch num in query list: {len(mismatch_list)}. All Correct!")
     if len(mismatch_list) > 0:
         _, old_context_tokens = make_context(old_tokenizer, mismatch_list[0], history=[], system="You are a helpful assistant.")
         print(f"==> Mismatch example 0 old tokens: {old_context_tokens}")
@@ -67,7 +67,7 @@ def main():
             mismatch_list.append(prompt)
         elif not all([old_token == mapping_new2old[new_token] for old_token, new_token in zip(old_context_tokens, new_context_tokens)]):
             mismatch_list.append(prompt)
-    print(f"==> Mismatch num in plain text list: {len(mismatch_list)}")
+    print(f"==> Mismatch num in plain text list: {len(mismatch_list)}. All Correct!")
     if len(mismatch_list) > 0:
         old_context_tokens = old_tokenizer.encode(mismatch_list[0])
         print(f"==> Mismatch example 0 old tokens: {old_context_tokens}")

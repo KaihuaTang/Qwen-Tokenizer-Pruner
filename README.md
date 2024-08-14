@@ -12,26 +12,40 @@ pip install -r requirements.txt
 
 ## Supported Models
 This tokenizer vocabulary pruning tool supports the following LLM models.
-- [Qwen]()
-- [Qwen-VL]()
-
+- [Qwen](https://huggingface.co/collections/Qwen/qwen-65c0e50c3f1ab89cb8704144)
+- [Qwen-VL](https://huggingface.co/Qwen/Qwen-VL)
+- [Qwen-VL-Chat](https://huggingface.co/Qwen/Qwen-VL-Chat)
 Please download your base model from the above checkpoints.
 
 ## Getting Started
+We support two types of tokenizer vocabulary pruning: lossless (in support data) and lossy (to a target size)
 
-1. Get new model and tokenzer with smaller vocabulary size
+### 1. Lossless Pruning
+To conduct lossless vocabulary pruning, you just need to simply run the following script with your own data/model pathes.
 ```
-python main.py --old_model_path ~/projects/checkpoints/Qwen-1_8B-Chat/ --new_model_path ~/projects/checkpoints/Qwen-1_8B-Chat-New-Vocab/ --support_data ./sample_data --support_lang 'zh-cn' 'en'
+bash prune_lossless.sh
+```
+The script will first prune the vocabulary and save it to the output path, and then check whether old tokenizer and new tokenzer are equivalent.
+
+Explaination of arguments used in the script
+```
+old_model_path="../../checkpoints/Qwen-VL-Chat/"
+new_model_path="../../checkpoints/Qwen-VL-Chat-new-vocab/"
+support_data="../../VLMEvalKit/raw_data/"
+support_lang="" # optional   e.g., support_lang="zh-cn en"
+inherit_vocab_count="" # optional
 ```
 
-2. Post processing
+### 2. Lossy Pruning
+
+
+
+### 3. Other details and special cases:
+- For support_lang, note that language detection is using [langdetect](https://pypi.org/project/langdetect/) package, please using the valid abbreviations of languages.
+- Post processing
 For Qwen models, change SPECIAL_START_ID in tokenization_qwen.py to your New Tiktoken BPE file Size, check printed log (see the following example). 
 ![alt text](./assets/example.png "New SPECIAL_START_ID")
 
-3. Check whether the new tokenizer is equal to the original tokenizer
-```
-python check.py --old_model_path ~/projects/checkpoints/Qwen-1_8B-Chat/ --new_model_path ~/projects/checkpoints/Qwen-1_8B-Chat-New-Vocab/ --support_data ./sample_data
-```
 
 ## Prepare Your Own Target Dataset
 

@@ -43,12 +43,15 @@ def count_freq(data_path, vocab_size, tokenizer, output_path, inherit_vocab_coun
             vocab_counts[token] += 1
             
     # add inherit vocab if it's not none
-    if inherit_vocab_count is not None:
-        print(f"==> Load inherit_vocab_count and add it to current vocab_counts: path({inherit_vocab_count})")
-        inherit_vocab_count = torch.load(inherit_vocab_count)
-        assert len(inherit_vocab_count) == vocab_size, f"inherit_vocab_count (size: {len(inherit_vocab_count)}) should have the same vocab size {vocab_size}"
-        for token, i_count in enumerate(inherit_vocab_count):
-            vocab_counts[token] += int(i_count)
+    if (inherit_vocab_count is not None):
+        if os.path.exists(inherit_vocab_count):
+            print(f"==> Load inherit_vocab_count and add it to current vocab_counts: path({inherit_vocab_count})")
+            inherit_vocab_count = torch.load(inherit_vocab_count)
+            assert len(inherit_vocab_count) == vocab_size, f"inherit_vocab_count (size: {len(inherit_vocab_count)}) should have the same vocab size {vocab_size}"
+            for token, i_count in enumerate(inherit_vocab_count):
+                vocab_counts[token] += int(i_count)
+        else:
+            print(f"==> No valid inherit vocabulary count path, skip inheritance!")
     
     # save vocab_counts
     torch.save(vocab_counts, os.path.join(output_path, 'vocab_counts.torch'))
