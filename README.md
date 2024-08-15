@@ -1,3 +1,8 @@
+<p align="left">
+    <a href="README_CN.md">中文</a>&nbsp ｜ &nbspEnglish&nbsp
+</p>
+
+
 # Qwen-Tokenizer-Pruner
 Due to the huge vocaburary size (151,936) of Qwen models, the Embedding and LM Head weights are excessively heavy. Therefore, this project provides a Tokenizer vocabulary pruning solution for Qwen and Qwen-VL.
 
