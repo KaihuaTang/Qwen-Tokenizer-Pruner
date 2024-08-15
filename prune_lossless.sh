@@ -1,9 +1,9 @@
 #!/bin/sh
 
-old_model_path="../../checkpoints/Qwen-VL-Chat/"
-new_model_path="../../checkpoints/Qwen-VL-Chat-new-vocab/"
+old_model_path="../../checkpoints/Qwen-7B-Chat/"
+new_model_path="../../checkpoints/Qwen-7B-Chat-new-vocab/"
 support_data="../../VLMEvalKit/raw_data/"
-support_lang="zh-cn en" # optional   e.g., support_lang="zh-cn en"
+support_lang="" # optional   e.g., support_lang="zh-cn en"
 inherit_vocab_count="" # optional
 
 # run pruning, check whether optional args are exists
