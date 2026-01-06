@@ -7,8 +7,7 @@
 # Qwen-Tokenizer-Pruner
 由于 Qwen 模型的词汇量巨大（151,936），其嵌入层和语言模型头部的权重过于庞大。因此在部署中往往造成过大的开销，本项目为 Qwen 和 Qwen-VL 提供了一个分词器词汇表修剪方案。
 
-**如果我的开源项目给您带来了启发，提供一些赞助将对我后续的开源工作有很大的帮助。** 
-[支持我的后续开源工作❤️🙏](https://kaihuatang.github.io/donate.html) [(往期支持者)](https://kaihuatang.github.io/supporters.html)
+
 
 
 ## Contents
